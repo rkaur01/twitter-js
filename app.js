@@ -1,12 +1,32 @@
 const http = require('http');
 const express = require( 'express' );
-
+const nunjucks = require('nunjucks');
 const app = express(); // creates an instance of an express application
 const server = http.createServer();
+
+var locals = {
+    title: 'Whatever',
+    people: [
+        {name: 'Raz'},
+        {name: 'Jamie'}
+    ]
+}
+
+
 
 server.listen(3000, function(){
     console.log('Listening on port 3000..');
 });
+
+app.set('view engine', 'html');
+app.engine('html', nunjucks.render);
+
+nunjucks.configure('views', {noCache: true});
+nunjucks.render('index.html', locals, function(err, output) {
+    if (err) { console.log(err.message)}
+    else console.log(output);
+});
+
 
 app.use(function(req, res, next){
     //do your logging here
@@ -15,11 +35,11 @@ app.use(function(req, res, next){
 })
 
 app.get('/', function(req, res){
-    res.send('Hiiiiii\n');
+    res.render('index', {title: 'Hello', people: locals.people});
 });
 
 app.get('/news', function(req, res){
-    res.send('Hi, this is da news\n');
+     res.render('index', {title: 'Daily News', people: locals.people});
 });
 
 // app.get('/is-anybody-in-there', function(req, res){
