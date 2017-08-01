@@ -3,18 +3,17 @@ const express = require( 'express' );
 const nunjucks = require('nunjucks');
 const app = express(); // creates an instance of an express application
 const server = http.createServer();
+const bodyParser = require('body-parser');
 
 const routes = require('./routes');
 app.use(express.static(__dirname + '/public'));
-app.use('/', routes);
 
-var locals = {
-    title: 'Whatever',
-    people: [
-        {name: 'Raz'},
-        {name: 'Jamie'}
-    ]
-}
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
+
+app.use('/', routes);
 
 app.engine('html', nunjucks.render);
 app.set('view engine', 'html');

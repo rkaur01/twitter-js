@@ -56,3 +56,8 @@ code {
 .content .by {
   font-weight: bold;
 }
+
+ul {
+  list-style: none;
+  display: inline;
+}
