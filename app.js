@@ -4,6 +4,10 @@ const nunjucks = require('nunjucks');
 const app = express(); // creates an instance of an express application
 const server = http.createServer();
 
+const routes = require('./routes');
+app.use(express.static(__dirname + '/public'));
+app.use('/', routes);
+
 var locals = {
     title: 'Whatever',
     people: [
@@ -28,12 +32,6 @@ app.use(function(req, res, next){
     next();
 })
 
-app.get('/', function(req, res){
-    res.render('index', {title: 'Hello', people: locals.people});
-});
 
-app.get('/news', function(req, res){
-     res.render('index', {title: 'Daily News', people: locals.people});
-});
 
 server.on('request', app);
